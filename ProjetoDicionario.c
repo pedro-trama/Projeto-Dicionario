@@ -7,7 +7,12 @@ Turma: 02D11
 */
 
 #include <stdio.h>
+#include <ctype.h>
+
+#define MAX_PALAVRAS (1000)
 
 int main(){
+
+
     return 0;
 }
