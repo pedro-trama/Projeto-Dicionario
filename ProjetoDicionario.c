@@ -19,6 +19,36 @@ int insercaoOrdenada(char vetor[][50], char palavra[50], int n);
 
 int main(){
 
+    //Variáveis
+    FILE *file;
+    char palavra[50];
+    char minuscula[50];
+    int i;
+
+    //Abrindo o arquivo em modo de leitura
+    file = fopen("dicionario.txt", "r");
+
+    if(file == NULL){
+        printf("Erro ao abrir o arquivo.\n");
+        return 1;
+    }
+
+    //Faz a leitura de cada palavra
+    while(fscanf(file, "%49s", palavra) == 1){
+        //Percorre cada caractere da palavra e converte para letras minúsculas
+        for(i = 0; palavra[i] != 0; i++){
+            minuscula[i] = tolower((unsigned char)palavra[i]);
+        }
+        //Faz com que a palavra termine com caractere nulo
+        minuscula[i] = '\0';
+
+        //Exibe as palavras uma por vez
+        printf("%s\n", minuscula);
+
+        //Fecha o arquivo
+        fclose(file);
+    }
+
     return 0;
 }
 
@@ -48,25 +78,25 @@ int buscaBinaria(char vetor[][50], char palavra[50], int inicio, int fim){
     }
 }
 
-    //Função da Inserção Ordenada
+//Função da Inserção Ordenada
 
-    int insercaoOrdenada(char vetor[][50], char palavra[], int n) {
+int insercaoOrdenada(char vetor[][50], char palavra[], int n) {
 
-        // Começa a percorrer o vetor pela última posição ocupada
-        int i = n - 1;
+    // Começa a percorrer o vetor pela última posição ocupada
+    int i = n - 1;
 
-        while(i >= 0 && strcmp(vetor[i], palavra) > 0) {
+    while(i >= 0 && strcmp(vetor[i], palavra) > 0) {
 
-        // Desloca a palavra atual uma posição à direita (destino, origem)
-        strcpy(vetor[i+1], vetor[i]);
+    // Desloca a palavra atual uma posição à direita (destino, origem)
+    strcpy(vetor[i+1], vetor[i]);
 
-        i--;
+    i--;
 
-        }
+    }
 
-        // Insere a nova palavra na posição correta
-        strcpy(vetor[i+1], palavra);
+    // Insere a nova palavra na posição correta
+    strcpy(vetor[i+1], palavra);
 
-        // Retorna a quantidade de palavras atualizada no vetor
-        return n + 1;
+    // Retorna a quantidade de palavras atualizada no vetor
+    return n + 1;
 }
