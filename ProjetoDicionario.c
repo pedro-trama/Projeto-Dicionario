@@ -15,9 +15,10 @@ Turma: 02D11
 //Protótipo das funções
 int buscaBinaria(char vetor[][50], char palavra[50], int inicio, int fim);
 
+int insercaoOrdenada(char vetor[][50], char palavra[50], int n);
+
 int main(){
 
-    
     return 0;
 }
 
@@ -45,6 +46,27 @@ int buscaBinaria(char vetor[][50], char palavra[50], int inicio, int fim){
     else {
         return buscaBinaria(vetor, palavra, inicio, meio - 1);
     }
-    
+}
 
+    //Função da Inserção Ordenada
+
+    int insercaoOrdenada(char vetor[][50], char palavra[], int n) {
+
+        // Começa a percorrer o vetor pela última posição ocupada
+        int i = n - 1;
+
+        while(i >= 0 && strcmp(vetor[i], palavra) > 0) {
+
+        // Desloca a palavra atual uma posição à direita (destino, origem)
+        strcpy(vetor[i+1], vetor[i]);
+
+        i--;
+
+        }
+
+        // Insere a nova palavra na posição correta
+        strcpy(vetor[i+1], palavra);
+
+        // Retorna a quantidade de palavras atualizada no vetor
+        return n + 1;
 }
