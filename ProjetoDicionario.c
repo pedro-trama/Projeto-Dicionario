@@ -16,18 +16,45 @@ Turma: 02D11
 //Protótipo das funções
 int buscaBinaria(char vetor[][50], char palavra[50], int inicio, int fim);
 
-int insercaoOrdenada(char vetor[][50], char palavra[50], int n);
+int insercaoOrdenada(char vetor[][50], int frequencia[], char palavra[], int n);
 
 void converterParaMinuscula(char palavra[50]);
+
+void carregarStopWords(char stopWords[][50], int quantidades);
+
+int filtroStopWords(char palavra[], char stopWords[][50], int quantidade);
 
 int main(){
 
     //Variáveis
     FILE *file;                                 //Ponteiro do arquivo txt
+
     char dicionario[MAX_PALAVRAS][MAX_TAMANHO]; //Matriz das palavras
+
     char palavra[MAX_TAMANHO];                  //Palavra lida do arquivo
-    int freqPalavra[MAX_TAMANHO];               //Frequência de cada palavra
+
+    char stopWords[MAX_PALAVRAS][MAX_TAMANHO];  // Palavra recebida pela entrada de Stop Words
+ 
+    int freqPalavra[MAX_PALAVRAS];              //Frequência de cada palavra
+
     int n = 0;                                  //Número de palavras distintas
+
+    int quantidadeStopWords;                    // Quantidade de palavras armazenadas dentro do Stop Words
+
+    scanf("%d", &quantidadeStopWords);
+
+    // Condição que verifica se a quantidade de palavras é apropriada
+    if (quantidadeStopWords >= 0 && quantidadeStopWords <= MAX_PALAVRAS) {
+
+        carregarStopWords(stopWords, quantidadeStopWords);
+        }
+    else {
+        printf("Esta quantidade ultrapassa o armazenamento do dicionário!\n");
+
+    return 1;
+    }
+
+
 
     //Abrindo o arquivo em modo de leitura
     file = fopen("dicionario.txt", "r");
@@ -36,19 +63,23 @@ int main(){
         printf("Erro ao abrir o arquivo.\n");
         return 1;
     }
-
+    
     //Faz a leitura de cada palavra
     while(fscanf(file, "%49s", palavra) == 1){
 
         //Chamada da função que converte a palavra em letras minúsculas
         converterParaMinuscula(palavra);
 
+        if (filtroStopWords(palavra, stopWords, quantidadeStopWords)) {
+            continue;
+        }
+
         //Chamada da função da busca binária recursiva
-        int pos = buscaBinaria(palavras, palavra, 0, n - 1);
+        int pos = buscaBinaria(dicionario, palavra, 0, n - 1);
 
         //Se a palavra estiver contida no dicionário, a frequência aumenta
         if(pos != -1){
-            qtdPalavra[pos]++;
+            freqPalavra[pos]++;
         }
         //Caso a palavra não esteja no dicionário, ela é inserida no dicionário 
         else{
@@ -107,7 +138,6 @@ int buscaBinaria(char vetor[][50], char palavra[50], int inicio, int fim){
 }
 
 //Função da Inserção Ordenada
-
 int insercaoOrdenada(char vetor[][50], int frequencia[], char palavra[], int n) {
 
     // Começa a percorrer o vetor pela última posição ocupada
@@ -145,4 +175,33 @@ void converterParaMinuscula(char palavra[50]){
         palavra[i] = tolower((unsigned char)palavra[i]);
     }
 
+}
+
+// Função que carrega as Stop Words recebidas pelo programa
+void carregarStopWords(char stopWords[][50], int quantidade) {
+
+    int i;
+
+    for (i = 0; i < quantidade; i++) {
+
+        scanf("%49s", stopWords[i]);
+
+        converterParaMinuscula(stopWords[i]);
+    }
+}
+
+// Função que filtra as Stop Words e as deleta
+int filtroStopWords(char palavra[], char stopWords[][50], int quantidade) {
+
+    int i;
+
+for (i = 0; i < quantidade; i++) {
+
+    if (strcmp(palavra, stopWords[i]) == 0) {
+
+        return 1;
+    }
+}
+
+    return 0;
 }
