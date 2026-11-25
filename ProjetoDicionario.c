@@ -41,6 +41,7 @@ int main(){
 
     int quantidadeStopWords;                    // Quantidade de palavras armazenadas dentro do Stop Words
 
+    printf("Quantidade de Stop Words: ");
     scanf("%d", &quantidadeStopWords);
 
     // Condição que verifica se a quantidade de palavras é apropriada
@@ -101,6 +102,7 @@ int main(){
     fclose(file);
 
     //Exibe as palavras e suas frequências
+    printf("=== DICIONÁRIO ===\n");
     for(int i = 0; i < n; i++){
         printf("%s, %d\n", dicionario[i], freqPalavra[i]);
     }
